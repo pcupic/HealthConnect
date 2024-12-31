@@ -22,11 +22,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
-
-@Preview(showBackground = true)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -47,6 +46,11 @@ fun LoginScreen() {
             Spacer(modifier = Modifier.height(20.dp))
 
             LoginButton(emailState.value, passwordState.value)
+            RegisterButton(
+                emailState.value,
+                passwordState.value,
+                navController,
+            )
         }
     }
 }
@@ -80,5 +84,14 @@ fun LoginButton(email: String, password: String) {
         // Ovdje dodajte logiku za prijavu
     }, modifier = Modifier.fillMaxWidth()) {
         Text(text = "Login")
+    }
+}
+
+@Composable
+fun RegisterButton(email: String, password: String, navController: NavController) {
+    Button(onClick = {
+                     navController.navigate(Routes.SCREEN_REGISTER)
+    }, modifier = Modifier.fillMaxWidth()) {
+        Text(text = "Register")
     }
 }
