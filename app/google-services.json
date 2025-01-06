@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1058448514742",
+    "project_id": "healthconnect-cupic-ca834",
+    "storage_bucket": "healthconnect-cupic-ca834.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058448514742:android:e17351dbce387050aad017",
+        "android_client_info": {
+          "package_name": "hr.ferit.patrikcupic.healthconnect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAGUreiiVd-5IpJgcd91DNfuwQX4VkMzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
