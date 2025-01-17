@@ -29,7 +29,7 @@ class DoctorViewModel : ViewModel(), AppointmentViewModel {
                 .whereEqualTo("doctorId", currentUser.uid)
                 .get()
                 .addOnSuccessListener { result ->
-                    appointmentsData.clear()  // Clear previous data
+                    appointmentsData.clear()
                     val appointments = result.documents.mapNotNull { document ->
                         document.toObject(Appointment::class.java)?.apply { id = document.id }
                     }
