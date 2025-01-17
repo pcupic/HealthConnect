@@ -59,8 +59,7 @@ class DoctorViewModel : ViewModel(), AppointmentViewModel {
             }
     }
 
-
-    private fun retrieveMedicalRecords() {
+    fun retrieveMedicalRecords() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             db.collection("medical_records")
@@ -75,62 +74,6 @@ class DoctorViewModel : ViewModel(), AppointmentViewModel {
                 }
         }
     }
-
-    private fun getDoctorUsername(onResult: (String?) -> Unit) {
-        val currentUser = auth.currentUser
-
-        if (currentUser != null) {
-            db.collection("doctors")
-                .document(currentUser.uid)
-                .get()
-                .addOnSuccessListener { document ->
-                    val username = document.getString("username") ?: "Dr. Unknown"
-                    onResult(username)
-                }
-
-        } else {
-            onResult(null)
-        }
-    }
-
-    fun addMedicalRecord(
-        record: MedicalRecord,
-    ) {
-        val recordId = UUID.randomUUID().toString()
-
-        val currentDateTime = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(Date())
-
-        getDoctorUsername { doctorUsername ->
-            val recordData = hashMapOf(
-                "id" to recordId,
-                "patientId" to record.patientId,
-                "doctorId" to record.doctorId,
-                "doctorUsername" to doctorUsername,
-                "details" to record.details,
-                "createdAt" to currentDateTime,
-                "patientUsername" to record.patientUsername,
-            )
-
-            db.collection("medical_records")
-                .document(recordId)
-                .set(recordData)
-                .addOnSuccessListener {
-                    retrieveMedicalRecords()
-                }
-
-        }
-    }
-
-    fun deleteMedicalRecord(
-            record: MedicalRecord,
-        ) {
-            db.collection("medical_records")
-                .document(record.id)
-                .delete()
-                .addOnSuccessListener {
-                    medicalRecordsData.remove(record)
-                }
-        }
 
         fun updateData() {
             retrievePatients()

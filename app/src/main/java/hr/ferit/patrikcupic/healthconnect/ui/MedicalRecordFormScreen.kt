@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import hr.ferit.patrikcupic.healthconnect.AppointmentScheduler
+import hr.ferit.patrikcupic.healthconnect.MedicalRecordManager
 import hr.ferit.patrikcupic.healthconnect.auth
 import hr.ferit.patrikcupic.healthconnect.data.MedicalRecord
 import hr.ferit.patrikcupic.healthconnect.data.Patient
@@ -33,6 +35,8 @@ fun MedicalRecordFormScreen(
 
     val patientsData = doctorViewModel.patientsData
     val context = LocalContext.current
+    val medicalRecordManager = remember { MedicalRecordManager(doctorViewModel) }
+
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -72,7 +76,7 @@ fun MedicalRecordFormScreen(
                             patientUsername = selectedPatientName,
                             details = details,
                             )
-                        doctorViewModel.addMedicalRecord(medicalRecord)
+                        medicalRecordManager.addMedicalRecord(medicalRecord)
                         Toast.makeText(context, "Medical Record Added", Toast.LENGTH_SHORT).show()
                         navigation.navigateUp()
                     } else {

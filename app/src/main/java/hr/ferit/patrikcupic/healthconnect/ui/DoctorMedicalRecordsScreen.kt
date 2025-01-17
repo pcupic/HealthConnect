@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import hr.ferit.patrikcupic.healthconnect.MedicalRecordManager
 import hr.ferit.patrikcupic.healthconnect.Routes
 import hr.ferit.patrikcupic.healthconnect.data.MedicalRecord
 
@@ -23,6 +24,7 @@ fun DoctorMedicalRecordsScreen(
     doctorViewModel: DoctorViewModel,
 ) {
     val medicalRecords by remember { mutableStateOf(doctorViewModel.medicalRecordsData) }
+    val medicalRecordManager = remember { MedicalRecordManager(doctorViewModel) }
 
     LaunchedEffect(Unit) {
         doctorViewModel.updateData()
@@ -68,7 +70,7 @@ fun DoctorMedicalRecordsScreen(
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 items(medicalRecords) { record ->
                     MedicalRecordCard(record) {
-                        doctorViewModel.deleteMedicalRecord(record)
+                        medicalRecordManager.deleteMedicalRecord(record)
                     }
                 }
             }
