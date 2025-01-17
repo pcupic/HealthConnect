@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import hr.ferit.patrikcupic.healthconnect.auth
 import hr.ferit.patrikcupic.healthconnect.Routes
+import hr.ferit.patrikcupic.healthconnect.db
 
 class Login(private val context: Context, private val navigation: NavController) {
 
@@ -27,9 +28,8 @@ class Login(private val context: Context, private val navigation: NavController)
     }
 
     private fun checkUserRole() {
-        val user = FirebaseAuth.getInstance().currentUser
+        val user = auth.currentUser
         user?.let {
-            val db = FirebaseFirestore.getInstance()
             db.collection("doctors").document(it.uid)
                 .get()
                 .addOnSuccessListener { document ->
