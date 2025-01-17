@@ -29,7 +29,7 @@ class Registration(private val context: Context) {
             }
     }
 
-    fun registerDoctor(email: String, password: String, bio: String, specialty: String, username : String) {
+    fun registerDoctor(email: String, password: String, specialty: String, username : String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -39,7 +39,6 @@ class Registration(private val context: Context) {
                         "id" to uid,
                         "email" to email,
                         "role" to UserRole.DOCTOR.name,
-                        "bio" to bio,
                         "specialty" to specialty,
                         "username" to username
                     )

@@ -21,8 +21,7 @@ class Login(private val context: Context, private val navigation: NavController)
                 if (task.isSuccessful) {
                     checkUserRole()
                 } else {
-                    val errorMessage = task.exception?.message ?: "Login failed"
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Login Failed", Toast.LENGTH_SHORT).show()
                 }
             }
     }

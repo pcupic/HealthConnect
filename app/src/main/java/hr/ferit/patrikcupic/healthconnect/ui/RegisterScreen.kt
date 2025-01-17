@@ -28,7 +28,6 @@ fun RegisterScreen(navigation: NavController) {
     var password by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var userType by remember { mutableStateOf("Patient") }
-    var bio by remember { mutableStateOf("") }
     var selectedSpecialty by remember { mutableStateOf("") }
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -56,13 +55,12 @@ fun RegisterScreen(navigation: NavController) {
                 Spacer(modifier = Modifier.height(20.dp))
 
                 if (userType == "Doctor") {
-                    BioInput(bio) { bio = it }
                     Spacer(modifier = Modifier.height(10.dp))
                     SpecialtyInput(selectedSpecialty) { selectedSpecialty = it }
                     Spacer(modifier = Modifier.height(20.dp))
                 }
 
-                RegisterButton(userType, email, password, bio, selectedSpecialty, username, navigation)
+                RegisterButton(userType, email, password, selectedSpecialty, username, navigation)
             }
         }
     }
@@ -111,18 +109,6 @@ fun PasswordInput(password: String, onPasswordChange: (String) -> Unit) {
         label = { Text("Password") },
         modifier = Modifier.fillMaxWidth(),
         visualTransformation = PasswordVisualTransformation(),
-        shape = RoundedCornerShape(10.dp)
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BioInput(bio: String, onBioChange: (String) -> Unit) {
-    OutlinedTextField(
-        value = bio,
-        onValueChange = onBioChange,
-        label = { Text("Bio") },
-        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp)
     )
 }
@@ -200,30 +186,49 @@ fun RegisterButton(
     userType: String,
     email: String,
     password: String,
-    bio: String,
     specialty: String,
     username: String,
-    navigation : NavController,
+    navigation: NavController,
 ) {
     val context = LocalContext.current
     val registration = remember { Registration(context) }
+    var errorMessage by remember { mutableStateOf("") }
 
-    Button(
-        onClick = {
-            when (userType) {
-                "Doctor" -> {
-                    registration.registerDoctor(email, password, bio, specialty, username)
+    Column {
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+
+        Button(
+            onClick = {
+                when {
+                    email.isBlank() -> errorMessage = "Email is required"
+                    password.isBlank() -> errorMessage = "Password is required"
+                    username.isBlank() -> errorMessage = "Username is required"
+                    userType == "Doctor" && specialty.isBlank() -> errorMessage = "Specialty is required for doctors"
+                    else -> {
+                        errorMessage = ""
+                        when (userType) {
+                            "Doctor" -> {
+                                registration.registerDoctor(email, password, specialty, username)
+                            }
+                            "Patient" -> {
+                                registration.registerPatient(email, password, username)
+                            }
+                        }
+                        navigation.navigate(Routes.SCREEN_LOGIN)
+                    }
                 }
-                "Patient" -> {
-                    registration.registerPatient(email, password, username)
-                }
-            }
-            navigation.navigate(Routes.SCREEN_LOGIN)
-        },
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-    ) {
-        Text(text = "Register", color = Color.White)
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(10.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+        ) {
+            Text(text = "Register", color = Color.White)
+        }
     }
 }

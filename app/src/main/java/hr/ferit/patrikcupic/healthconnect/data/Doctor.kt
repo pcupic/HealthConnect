@@ -6,6 +6,5 @@ data class Doctor(
     var email: String = "",
     var password: String = "",
     var role: UserRole = UserRole.DOCTOR,
-    var bio: String = "",
     var specialty: Specialty = Specialty.Pediatrics
 )
