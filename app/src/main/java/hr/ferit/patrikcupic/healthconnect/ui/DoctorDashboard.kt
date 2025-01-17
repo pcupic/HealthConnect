@@ -15,7 +15,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import hr.ferit.patrikcupic.healthconnect.AppointmentScheduler
 import hr.ferit.patrikcupic.healthconnect.Routes
 import hr.ferit.patrikcupic.healthconnect.data.AppointmentStatus
 import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
@@ -109,8 +111,11 @@ fun DoctorAppointmentItem(
     doctorViewModel: DoctorViewModel,
 ) {
 
-    if(appointment.status == AppointmentStatus.COMPLETED)
-        doctorViewModel.deleteAppointment(appointment)
+    if(appointment.status == AppointmentStatus.COMPLETED) {
+        val context = LocalContext.current
+        val scheduler = remember { AppointmentScheduler(context, doctorViewModel) }
+        scheduler.deleteAppointment(appointment)
+    }
 
     val textColor = when (appointment.status) {
         AppointmentStatus.PENDING -> Color.Black

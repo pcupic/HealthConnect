@@ -15,7 +15,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import com.google.api.Context
+import hr.ferit.patrikcupic.healthconnect.AppointmentScheduler
 import hr.ferit.patrikcupic.healthconnect.Routes
 import hr.ferit.patrikcupic.healthconnect.data.AppointmentStatus
 
@@ -25,6 +28,8 @@ fun PatientDashboard(
     patientViewModel: PatientViewModel,
 ) {
     val scheduledAppointments = patientViewModel.appointmentsData
+    val context = LocalContext.current
+    val scheduler = remember { AppointmentScheduler(context, patientViewModel) }
     LaunchedEffect(Unit) {
         patientViewModel.updateData()
     }
@@ -84,7 +89,7 @@ fun PatientDashboard(
                     PatientAppointmentItem(
                         appointment = appointment,
                         onDelete = { appointmentToDelete ->
-                            patientViewModel.deleteAppointment(appointmentToDelete)
+                            scheduler.deleteAppointment(appointmentToDelete)
                             patientViewModel.updateData()
                         }
                     )

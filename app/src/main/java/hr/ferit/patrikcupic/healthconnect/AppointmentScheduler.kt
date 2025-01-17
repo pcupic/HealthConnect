@@ -2,10 +2,18 @@ package hr.ferit.patrikcupic.healthconnect
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.runtime.mutableStateListOf
 import hr.ferit.patrikcupic.healthconnect.data.Appointment
+import hr.ferit.patrikcupic.healthconnect.views.AppointmentViewModel
+import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
+import hr.ferit.patrikcupic.healthconnect.views.PatientViewModel
 import java.util.UUID
 
-class AppointmentScheduler(private val context: Context) {
+class AppointmentScheduler<T>(
+    private val context: Context,
+    private val viewModel : T,
+) where T : AppointmentViewModel {
+    val appointmentsData = viewModel.appointmentsData
 
     fun scheduleAppointment(appointment: Appointment) {
         val currentUser = auth.currentUser
@@ -47,5 +55,14 @@ class AppointmentScheduler(private val context: Context) {
         } else {
             Toast.makeText(context, "User is not logged in", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun deleteAppointment(appointment: Appointment) {
+        db.collection("appointments")
+            .document(appointment.id)
+            .delete()
+            .addOnSuccessListener {
+                appointmentsData.remove(appointment)
+            }
     }
 }

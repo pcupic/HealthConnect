@@ -8,8 +8,8 @@ import hr.ferit.patrikcupic.healthconnect.data.Doctor
 import hr.ferit.patrikcupic.healthconnect.data.MedicalRecord
 import hr.ferit.patrikcupic.healthconnect.db
 
-class PatientViewModel : ViewModel() {
-    val appointmentsData = mutableStateListOf<Appointment>()
+class PatientViewModel : ViewModel(), AppointmentViewModel {
+    override val appointmentsData = mutableStateListOf<Appointment>()
     val doctorsData = mutableStateListOf<Doctor>()
     val medicalRecordsData = mutableStateListOf<MedicalRecord>()
 
@@ -65,14 +65,7 @@ class PatientViewModel : ViewModel() {
             }
     }
 
-    fun deleteAppointment(appointment: Appointment) {
-        db.collection("appointments")
-            .document(appointment.id)
-            .delete()
-            .addOnSuccessListener {
-                appointmentsData.remove(appointment)
-            }
-    }
+
 
     fun updateData() {
         retrieveDoctors()

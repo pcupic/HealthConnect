@@ -13,8 +13,8 @@ import java.util.Date
 import java.util.Locale
 import java.util.UUID
 
-class DoctorViewModel : ViewModel() {
-    val appointmentsData = mutableStateListOf<Appointment>()
+class DoctorViewModel : ViewModel(), AppointmentViewModel {
+    override val appointmentsData = mutableStateListOf<Appointment>()
     val patientsData = mutableStateListOf<Patient>()
     val medicalRecordsData = mutableStateListOf<MedicalRecord>()
 
@@ -129,15 +129,6 @@ class DoctorViewModel : ViewModel() {
                 .delete()
                 .addOnSuccessListener {
                     medicalRecordsData.remove(record)
-                }
-        }
-
-        fun deleteAppointment(appointment: Appointment) {
-            db.collection("appointments")
-                .document(appointment.id)
-                .delete()
-                .addOnSuccessListener {
-                    appointmentsData.remove(appointment)
                 }
         }
 
