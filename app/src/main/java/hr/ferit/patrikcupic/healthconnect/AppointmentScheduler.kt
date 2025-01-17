@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateListOf
 import hr.ferit.patrikcupic.healthconnect.data.Appointment
+import hr.ferit.patrikcupic.healthconnect.data.AppointmentStatus
 import hr.ferit.patrikcupic.healthconnect.views.AppointmentViewModel
 import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
 import hr.ferit.patrikcupic.healthconnect.views.PatientViewModel
@@ -13,7 +14,6 @@ class AppointmentScheduler<T>(
     private val context: Context,
     private val viewModel : T,
 ) where T : AppointmentViewModel {
-    val appointmentsData = viewModel.appointmentsData
 
     fun scheduleAppointment(appointment: Appointment) {
         val currentUser = auth.currentUser
@@ -62,7 +62,15 @@ class AppointmentScheduler<T>(
             .document(appointment.id)
             .delete()
             .addOnSuccessListener {
-                appointmentsData.remove(appointment)
+                viewModel.appointmentsData.remove(appointment)
+            }
+    }
+
+    fun updateAppointmentStatus(appointment: Appointment, newStatus: AppointmentStatus) {
+        db.collection("appointments").document(appointment.id)
+            .update("status", newStatus.name)
+            .addOnSuccessListener {
+                appointment.status = newStatus
             }
     }
 }

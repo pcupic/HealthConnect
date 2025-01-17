@@ -107,7 +107,7 @@ fun PatientProfileScreen(
                 onClick = {
                     auth.signOut()
                     Toast.makeText(context, "Signed out successfully", Toast.LENGTH_SHORT).show()
-                    navigation.navigate(Routes.SCREEN_LOGIN) // Navigate to login screen after sign out
+                    navigation.navigate(Routes.SCREEN_LOGIN)
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -123,7 +123,7 @@ fun PatientProfileScreen(
                     navigation.navigate(Routes.SCREEN_LOGIN)
                 },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Red) // Optional: Red color for delete action
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
             ) {
                 Text("Delete Account", color = Color.White)
             }

@@ -99,6 +99,7 @@ fun DoctorProfileScreen(
             ) {
                 Text("Update Profile")
             }
+
             Button(
                 onClick = {
                     auth.signOut()

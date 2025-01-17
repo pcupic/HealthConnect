@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +37,16 @@ fun DoctorMedicalRecordsScreen(
             .padding(16.dp)
             .background(Color(0xFFF5F5F5))
     ) {
+        Button(
+            onClick = { navigation.navigateUp() },
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.Start),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6200EE))
+        ) {
+            Text("Back")
+        }
+
         Text(
             text = "Medical Records",
             style = MaterialTheme.typography.headlineMedium,

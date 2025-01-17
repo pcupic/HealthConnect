@@ -50,15 +50,6 @@ class DoctorViewModel : ViewModel(), AppointmentViewModel {
             }
     }
 
-    fun updateAppointmentStatus(appointment: Appointment, newStatus: AppointmentStatus) {
-        db.collection("appointments").document(appointment.id)
-            .update("status", newStatus.name)
-            .addOnSuccessListener {
-                appointment.status = newStatus
-                updateData()
-            }
-    }
-
     fun retrieveMedicalRecords() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
