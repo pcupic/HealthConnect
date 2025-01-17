@@ -10,7 +10,6 @@ import java.util.UUID
 class MedicalRecordManager(
     private val doctorViewModel: DoctorViewModel,
 ) {
-    private val medicalRecordsData = doctorViewModel.medicalRecordsData
 
     fun addMedicalRecord(
         record: MedicalRecord,
@@ -45,9 +44,6 @@ class MedicalRecordManager(
         db.collection("medical_records")
             .document(record.id)
             .delete()
-            .addOnSuccessListener {
-                medicalRecordsData.remove(record)
-            }
     }
 
     private fun getDoctorUsername(onResult: (String?) -> Unit) {
@@ -61,7 +57,6 @@ class MedicalRecordManager(
                     val username = document.getString("username") ?: "Dr. Unknown"
                     onResult(username)
                 }
-
         } else {
             onResult(null)
         }

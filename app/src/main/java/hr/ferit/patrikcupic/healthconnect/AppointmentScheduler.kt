@@ -10,11 +10,9 @@ import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
 import hr.ferit.patrikcupic.healthconnect.views.PatientViewModel
 import java.util.UUID
 
-class AppointmentScheduler<T>(
+class AppointmentScheduler(
     private val context: Context,
-    private val viewModel : T,
-) where T : AppointmentViewModel {
-
+) {
     fun scheduleAppointment(appointment: Appointment) {
         val currentUser = auth.currentUser
         val currentUserId = currentUser?.uid
@@ -61,16 +59,10 @@ class AppointmentScheduler<T>(
         db.collection("appointments")
             .document(appointment.id)
             .delete()
-            .addOnSuccessListener {
-                viewModel.appointmentsData.remove(appointment)
-            }
     }
 
     fun updateAppointmentStatus(appointment: Appointment, newStatus: AppointmentStatus) {
         db.collection("appointments").document(appointment.id)
             .update("status", newStatus.name)
-            .addOnSuccessListener {
-                appointment.status = newStatus
-            }
     }
 }

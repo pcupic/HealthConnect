@@ -37,7 +37,7 @@ fun AppointmentScheduleScreen(
 
     val doctorsData = patientViewModel.doctorsData
     val context = LocalContext.current
-    val scheduler = remember { AppointmentScheduler(context, patientViewModel) }
+    val scheduler = remember { AppointmentScheduler(context) }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
