@@ -62,7 +62,7 @@ fun DoctorProfileScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
                 value = email,
@@ -72,7 +72,7 @@ fun DoctorProfileScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
                 value = password,
@@ -94,11 +94,14 @@ fun DoctorProfileScreen(
                         email = email,
                         password = password
                     )
+                    doctorViewModel.updateData()
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Update Profile")
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Button(
                 onClick = {
@@ -113,12 +116,15 @@ fun DoctorProfileScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Delete Account Button
             Button(
                 onClick = {
-                    ProfileManager.deleteDoctor(context)
-                    doctorViewModel.updateData()
-                    navigation.navigate(Routes.SCREEN_LOGIN)
+                    if (password.isNotEmpty()) {
+                        ProfileManager.deleteDoctor(context, password)
+                        doctorViewModel.updateData()
+                        navigation.navigate(Routes.SCREEN_LOGIN)
+                    } else {
+                        Toast.makeText(context, "Please enter your password to confirm deletion", Toast.LENGTH_SHORT).show()
+                    }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Red)

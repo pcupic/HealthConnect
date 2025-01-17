@@ -13,8 +13,8 @@ import java.util.Date
 import java.util.Locale
 import java.util.UUID
 
-class DoctorViewModel : ViewModel(), AppointmentViewModel {
-    override val appointmentsData = mutableStateListOf<Appointment>()
+class DoctorViewModel : ViewModel() {
+    val appointmentsData = mutableStateListOf<Appointment>()
     val patientsData = mutableStateListOf<Patient>()
     val medicalRecordsData = mutableStateListOf<MedicalRecord>()
 
@@ -50,7 +50,7 @@ class DoctorViewModel : ViewModel(), AppointmentViewModel {
             }
     }
 
-    fun retrieveMedicalRecords() {
+    private fun retrieveMedicalRecords() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             db.collection("medical_records")

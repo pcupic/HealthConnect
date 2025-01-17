@@ -10,23 +10,11 @@ class Registration(private val context: Context) {
     private fun savePatientToDatabase(uid: String, userData: Map<String, Any>) {
         db.collection("patients").document(uid)
             .set(userData)
-            .addOnSuccessListener {
-                Toast.makeText(context, "User data saved successfully.", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(context, "Failed to save user data: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 
     private fun saveDoctorToDatabase(uid: String, userData: Map<String, Any>) {
         db.collection("doctors").document(uid)
             .set(userData)
-            .addOnSuccessListener {
-                Toast.makeText(context, "User data saved successfully.", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(context, "Failed to save user data: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 
     fun registerDoctor(email: String, password: String, specialty: String, username : String) {
@@ -37,7 +25,6 @@ class Registration(private val context: Context) {
 
                     val doctorData = mapOf(
                         "id" to uid,
-                        "email" to email,
                         "role" to UserRole.DOCTOR.name,
                         "specialty" to specialty,
                         "username" to username
@@ -59,7 +46,6 @@ class Registration(private val context: Context) {
 
                     val patientData = mapOf(
                         "id" to uid,
-                        "email" to email,
                         "role" to UserRole.PATIENT.name,
                         "username" to username
                     )

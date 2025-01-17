@@ -110,7 +110,7 @@ fun MedicalRecordCard(record: MedicalRecord) {
                 .padding(16.dp)
         ) {
             Text(
-                "Patient: ${record.patientUsername}",
+                "Doctor: ${record.doctorUsername}",
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
             )
             Text(

@@ -27,12 +27,13 @@ fun PatientDashboard(
     navigation: NavController,
     patientViewModel: PatientViewModel,
 ) {
-    val scheduledAppointments = patientViewModel.appointmentsData
-    val context = LocalContext.current
-    val scheduler = remember { AppointmentScheduler(context, patientViewModel) }
     LaunchedEffect(Unit) {
         patientViewModel.updateData()
     }
+
+    val scheduledAppointments = patientViewModel.appointmentsData
+    val context = LocalContext.current
+    val scheduler = remember { AppointmentScheduler(context) }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -104,13 +105,13 @@ fun PatientDashboard(
 @Composable
 fun PatientAppointmentItem(
     appointment: Appointment,
-    onDelete: (Appointment) -> Unit
+    onDelete: (Appointment) -> Unit,
 ) {
     val backgroundColor = when (appointment.status) {
-        AppointmentStatus.PENDING -> Color(0xFF1E1E1E) // Dark gray for pending
-        AppointmentStatus.CONFIRMED -> Color(0xFF388E3C) // Strong green for confirmed
-        AppointmentStatus.CANCELED -> Color(0xFFD32F2F) // Bold red for canceled
-        AppointmentStatus.COMPLETED -> Color(0xFF616161) // Bold gray for completed
+        AppointmentStatus.PENDING -> Color(0xFF1E1E1E)
+        AppointmentStatus.CONFIRMED -> Color(0xFF388E3C)
+        AppointmentStatus.CANCELED -> Color(0xFFD32F2F)
+        AppointmentStatus.COMPLETED -> Color(0xFF616161)
         else -> Color.White
     }
 

@@ -2,12 +2,8 @@ package hr.ferit.patrikcupic.healthconnect
 
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.runtime.mutableStateListOf
 import hr.ferit.patrikcupic.healthconnect.data.Appointment
 import hr.ferit.patrikcupic.healthconnect.data.AppointmentStatus
-import hr.ferit.patrikcupic.healthconnect.views.AppointmentViewModel
-import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
-import hr.ferit.patrikcupic.healthconnect.views.PatientViewModel
 import java.util.UUID
 
 class AppointmentScheduler(

@@ -29,7 +29,7 @@ fun DoctorDashboard(
 ) {
     val scheduledAppointments = doctorViewModel.appointmentsData
     val context = LocalContext.current
-    val scheduler = remember { AppointmentScheduler(context, doctorViewModel) }
+    val scheduler = remember { AppointmentScheduler(context) }
     LaunchedEffect(Unit) {
         doctorViewModel.updateData()
     }
@@ -81,7 +81,6 @@ fun DoctorDashboard(
                 items(scheduledAppointments) { appointment ->
                     DoctorAppointmentItem(
                         appointment = appointment,
-                        doctorViewModel = doctorViewModel,
                         onConfirm = {
                             scheduler.updateAppointmentStatus(appointment, AppointmentStatus.CONFIRMED)
                             doctorViewModel.updateData()
@@ -92,7 +91,7 @@ fun DoctorDashboard(
 
                         },
                         onComplete = {
-                            scheduler.updateAppointmentStatus(appointment, AppointmentStatus.COMPLETED)
+                            scheduler.deleteAppointment(appointment)
                             doctorViewModel.updateData()
                         }
                     )
@@ -110,14 +109,7 @@ fun DoctorAppointmentItem(
     onConfirm: () -> Unit,
     onCancel: () -> Unit,
     onComplete: () -> Unit,
-    doctorViewModel: DoctorViewModel,
 ) {
-
-    if(appointment.status == AppointmentStatus.COMPLETED) {
-        val context = LocalContext.current
-        val scheduler = remember { AppointmentScheduler(context, doctorViewModel) }
-        scheduler.deleteAppointment(appointment)
-    }
 
     val textColor = when (appointment.status) {
         AppointmentStatus.PENDING -> Color.Black

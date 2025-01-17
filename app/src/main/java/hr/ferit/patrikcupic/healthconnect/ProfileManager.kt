@@ -3,7 +3,9 @@
 package hr.ferit.patrikcupic.healthconnect
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
+import com.google.firebase.auth.EmailAuthProvider
 
 object ProfileManager {
 
@@ -32,6 +34,12 @@ object ProfileManager {
         val currentUserId = auth.currentUser?.uid
         if (currentUserId != null) {
             updateUsername(context, role, currentUserId, username) {
+                if (role == "doctors") {
+                    updateDoctorUsernameInAppointmentsAndMedicalRecords(currentUserId, username)
+                } else if (role == "patients") {
+                    updatePatientUsernameInAppointmentsAndMedicalRecords(currentUserId, username)
+                }
+
                 updateEmail(context, email) {
                     updatePassword(context, password)
                 }
@@ -40,6 +48,7 @@ object ProfileManager {
             Toast.makeText(context, "User not logged in.", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun updateUsername(
         context: Context,
@@ -63,12 +72,12 @@ object ProfileManager {
         onComplete: () -> Unit
     ) {
         if (email.isNotEmpty() && email != auth.currentUser?.email) {
-            auth.currentUser?.updateEmail(email)
+            auth.currentUser?.verifyBeforeUpdateEmail(email)
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         onComplete()
                     } else {
-                        Toast.makeText(context, "Error updating email.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error updating email", Toast.LENGTH_SHORT).show()
                     }
                 }
         } else {
@@ -84,17 +93,17 @@ object ProfileManager {
             auth.currentUser?.updatePassword(password)
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(context, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Verify your email", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, "Error updating password.", Toast.LENGTH_SHORT).show()
                     }
                 }
         } else {
-            Toast.makeText(context, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Verify your email!", Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun deletePatient(context: Context) {
+    fun deletePatient(context: Context, password: String) {
         val currentUserId = auth.currentUser?.uid
 
         currentUserId?.let { id ->
@@ -108,17 +117,25 @@ object ProfileManager {
                         .addOnSuccessListener { medicalRecordQuerySnapshot ->
                             if (!medicalRecordQuerySnapshot.isEmpty)
                                 for (medicalRecord in medicalRecordQuerySnapshot.documents)
-                                    db.collection("medical_records").document(medicalRecord.id).delete()
+                                    db.collection("medical_records").document(medicalRecord.id)
+                                        .delete()
 
 
                             db.collection("patients").document(id).delete()
                                 .addOnSuccessListener {
-                                    // Now delete the user account
                                     auth.currentUser?.delete()?.addOnCompleteListener { task ->
                                         if (task.isSuccessful) {
-                                            Toast.makeText(context, "Account and related data deleted successfully", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(
+                                                context,
+                                                "Account and related data deleted successfully",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         } else {
-                                            Toast.makeText(context, "Failed to delete account: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(
+                                                context,
+                                                "Failed to delete account: ${task.exception?.message}",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
                                     }
                                 }
@@ -130,7 +147,7 @@ object ProfileManager {
     }
 
 
-    fun deleteDoctor(context: Context) {
+    fun deleteDoctor(context: Context, password: String) {
         val currentUserId = auth.currentUser?.uid
 
         currentUserId?.let { id ->
@@ -149,9 +166,17 @@ object ProfileManager {
                                 .addOnSuccessListener {
                                     auth.currentUser?.delete()?.addOnCompleteListener { task ->
                                         if (task.isSuccessful) {
-                                            Toast.makeText(context, "Doctor account and related data deleted successfully", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(
+                                                context,
+                                                "Doctor account and related data deleted successfully",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         } else {
-                                            Toast.makeText(context, "Failed to delete account: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(
+                                                context,
+                                                "Failed to delete account: ${task.exception?.message}",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
                                     }
                                 }
@@ -162,5 +187,64 @@ object ProfileManager {
         }
     }
 
+    private fun updateDoctorUsernameInAppointmentsAndMedicalRecords(
+        doctorId: String,
+        newUsername: String
+    ) {
+        db.collection("appointments")
+            .whereEqualTo("doctorId", doctorId)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot.documents) {
+                    val appointmentId = document.id
+                    db.collection("appointments").document(appointmentId)
+                        .update(
+                            "doctorUsername",
+                            newUsername
+                        )
+                }
+            }
+
+        db.collection("medical_records")
+            .whereEqualTo("doctorId", doctorId)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot.documents) {
+                    val medicalRecordId = document.id
+                    db.collection("medical_records").document(medicalRecordId)
+                        .update(
+                            "doctorUsername",
+                            newUsername
+                        )
+                }
+            }
+    }
+
+    private fun updatePatientUsernameInAppointmentsAndMedicalRecords(
+        patientId: String,
+        newUsername: String
+    ) {
+        db.collection("appointments")
+            .whereEqualTo("patientId", patientId)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot.documents) {
+                    val appointmentId = document.id
+                    db.collection("appointments").document(appointmentId)
+                        .update("patientUsername", newUsername)
+                }
+            }
+
+        db.collection("medical_records")
+            .whereEqualTo("patientId", patientId)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot.documents) {
+                    val medicalRecordId = document.id
+                    db.collection("medical_records").document(medicalRecordId)
+                        .update("patientUsername", newUsername)
+                }
+            }
+    }
 
 }

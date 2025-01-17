@@ -118,15 +118,20 @@ fun PatientProfileScreen(
 
             Button(
                 onClick = {
-                    ProfileManager.deletePatient(context)
-                    patientViewModel.updateData()
-                    navigation.navigate(Routes.SCREEN_LOGIN)
+                    if (password.isNotEmpty()) {
+                        ProfileManager.deletePatient(context, password)
+                        patientViewModel.updateData()
+                        navigation.navigate(Routes.SCREEN_LOGIN)
+                    } else {
+                        Toast.makeText(context, "Please enter your password to confirm deletion", Toast.LENGTH_SHORT).show()
+                    }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
             ) {
                 Text("Delete Account", color = Color.White)
             }
+
         }
 
         Button(

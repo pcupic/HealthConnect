@@ -8,8 +8,8 @@ import hr.ferit.patrikcupic.healthconnect.data.Doctor
 import hr.ferit.patrikcupic.healthconnect.data.MedicalRecord
 import hr.ferit.patrikcupic.healthconnect.db
 
-class PatientViewModel : ViewModel(), AppointmentViewModel {
-    override val appointmentsData = mutableStateListOf<Appointment>()
+class PatientViewModel : ViewModel() {
+    val appointmentsData = mutableStateListOf<Appointment>()
     val doctorsData = mutableStateListOf<Doctor>()
     val medicalRecordsData = mutableStateListOf<MedicalRecord>()
 
