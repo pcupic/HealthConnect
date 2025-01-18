@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import hr.ferit.patrikcupic.healthconnect.ProfileManager
 import hr.ferit.patrikcupic.healthconnect.Routes
 import hr.ferit.patrikcupic.healthconnect.authentication.Login
 
@@ -60,6 +61,9 @@ fun LoginScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(10.dp))
 
             RegisterButton(navController)
+            Spacer(modifier = Modifier.height(10.dp))
+
+            ResetPasswordButton(emailState.value)
         }
     }
 }
@@ -118,5 +122,20 @@ fun RegisterButton(navController: NavController) {
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2196F3))
     ) {
         Text(text = "Register", color = Color.White)
+    }
+}
+
+@Composable
+fun ResetPasswordButton(email: String) {
+    val context = LocalContext.current
+
+    Button(
+        onClick = {
+            ProfileManager.handlePasswordReset(context, email)
+        },
+        modifier = Modifier.fillMaxWidth(),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF44336))
+    ) {
+        Text(text = "Forgot Password?", color = Color.White)
     }
 }

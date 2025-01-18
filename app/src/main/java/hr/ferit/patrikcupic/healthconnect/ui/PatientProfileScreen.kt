@@ -48,7 +48,6 @@ fun PatientProfileScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Title
             Text(
                 text = "Patient Profile",
                 fontSize = 24.sp,
@@ -119,7 +118,7 @@ fun PatientProfileScreen(
             Button(
                 onClick = {
                     if (password.isNotEmpty()) {
-                        ProfileManager.deletePatient(context, password)
+                        ProfileManager.deletePatient(context)
                         patientViewModel.updateData()
                         navigation.navigate(Routes.SCREEN_LOGIN)
                     } else {

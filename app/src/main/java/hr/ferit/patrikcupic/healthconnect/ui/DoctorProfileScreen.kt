@@ -41,6 +41,15 @@ fun DoctorProfileScreen(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
+        Button(
+            onClick = { navigation.navigateUp() },
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.TopStart)
+        ) {
+            Text("Back")
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -119,7 +128,7 @@ fun DoctorProfileScreen(
             Button(
                 onClick = {
                     if (password.isNotEmpty()) {
-                        ProfileManager.deleteDoctor(context, password)
+                        ProfileManager.deleteDoctor(context)
                         doctorViewModel.updateData()
                         navigation.navigate(Routes.SCREEN_LOGIN)
                     } else {

@@ -59,6 +59,7 @@ object ProfileManager {
     ) {
         db.collection(role).document(userId).update("username", username)
             .addOnSuccessListener {
+                Toast.makeText(context, "Username updated.", Toast.LENGTH_SHORT).show()
                 onComplete()
             }
             .addOnFailureListener {
@@ -75,6 +76,7 @@ object ProfileManager {
             auth.currentUser?.verifyBeforeUpdateEmail(email)
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        Toast.makeText(context, "Verify your email!", Toast.LENGTH_SHORT).show()
                         onComplete()
                     } else {
                         Toast.makeText(context, "Error updating email", Toast.LENGTH_SHORT).show()
@@ -93,17 +95,15 @@ object ProfileManager {
             auth.currentUser?.updatePassword(password)
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(context, "Verify your email", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Password updated.", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, "Error updating password.", Toast.LENGTH_SHORT).show()
                     }
                 }
-        } else {
-            Toast.makeText(context, "Verify your email!", Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun deletePatient(context: Context, password: String) {
+    fun deletePatient(context: Context) {
         val currentUserId = auth.currentUser?.uid
 
         currentUserId?.let { id ->
@@ -147,7 +147,7 @@ object ProfileManager {
     }
 
 
-    fun deleteDoctor(context: Context, password: String) {
+    fun deleteDoctor(context: Context) {
         val currentUserId = auth.currentUser?.uid
 
         currentUserId?.let { id ->
@@ -247,4 +247,20 @@ object ProfileManager {
             }
     }
 
+    fun handlePasswordReset(context: Context, email: String) {
+        if (email.isNotEmpty()) {
+            auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(context, "Reset password email sent.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        } else {
+            Toast.makeText(
+                context,
+                "Please enter your email to reset password.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 }

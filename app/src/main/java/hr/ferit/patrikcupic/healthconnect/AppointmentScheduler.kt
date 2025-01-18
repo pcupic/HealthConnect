@@ -36,14 +36,23 @@ class AppointmentScheduler(
                                 .document(appointmentId)
                                 .set(appointmentData)
                                 .addOnSuccessListener {
-                                    Toast.makeText(context, "Appointment successfully scheduled", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        "Appointment Scheduled for $patientUsername at ${appointment.dateTime} with ${appointment.doctorUsername}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
 
                         } else {
-                            Toast.makeText(context, "Username not found for the current user", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Username not found for the current user",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     } else {
-                        Toast.makeText(context, "User document not found", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "User document not found", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
         } else {

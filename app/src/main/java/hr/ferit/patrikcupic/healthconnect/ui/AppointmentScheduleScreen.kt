@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -40,6 +41,15 @@ fun AppointmentScheduleScreen(
     val scheduler = remember { AppointmentScheduler(context) }
 
     Box(modifier = Modifier.fillMaxSize()) {
+
+        Button(
+            onClick = { navigation.navigateUp() },
+            modifier = Modifier
+                .padding(16.dp).align(Alignment.TopStart)
+        ) {
+            Text("Back")
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -95,7 +105,6 @@ fun AppointmentScheduleScreen(
                             doctorUsername = selectedDoctorName,
                         )
                         scheduler.scheduleAppointment(appointment)
-                        Toast.makeText(context, "Appointment Scheduled for $selectedDate at $selectedTime with Dr. $selectedDoctorName", Toast.LENGTH_SHORT).show()
                         navigation.navigateUp()
                     } else {
                         Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
