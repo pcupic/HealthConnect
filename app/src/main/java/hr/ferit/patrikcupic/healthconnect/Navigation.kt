@@ -1,6 +1,5 @@
 package hr.ferit.patrikcupic.healthconnect
 
-import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,6 +14,7 @@ import hr.ferit.patrikcupic.healthconnect.ui.PatientDashboard
 import hr.ferit.patrikcupic.healthconnect.ui.PatientMedicalRecordsScreen
 import hr.ferit.patrikcupic.healthconnect.ui.PatientProfileScreen
 import hr.ferit.patrikcupic.healthconnect.ui.RegisterScreen
+import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
 import hr.ferit.patrikcupic.healthconnect.views.PatientViewModel
 
 object Routes {

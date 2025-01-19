@@ -3,10 +3,8 @@ package hr.ferit.patrikcupic.healthconnect.authentication
 import android.content.Context
 import android.widget.Toast
 import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import hr.ferit.patrikcupic.healthconnect.auth
 import hr.ferit.patrikcupic.healthconnect.Routes
+import hr.ferit.patrikcupic.healthconnect.auth
 import hr.ferit.patrikcupic.healthconnect.db
 
 class Login(private val context: Context, private val navigation: NavController) {

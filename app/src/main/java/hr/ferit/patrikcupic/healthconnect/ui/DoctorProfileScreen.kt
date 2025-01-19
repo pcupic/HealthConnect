@@ -1,6 +1,5 @@
 package hr.ferit.patrikcupic.healthconnect.ui
 
-import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,9 +14,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import hr.ferit.patrikcupic.healthconnect.auth
 import hr.ferit.patrikcupic.healthconnect.ProfileManager
 import hr.ferit.patrikcupic.healthconnect.Routes
+import hr.ferit.patrikcupic.healthconnect.auth
+import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -114,7 +114,7 @@ fun DoctorProfileScreen(
 
             Button(
                 onClick = {
-                    auth.signOut()
+                    ProfileManager.signOut()
                     Toast.makeText(context, "Signed out successfully", Toast.LENGTH_SHORT).show()
                     navigation.navigate(Routes.SCREEN_LOGIN)
                 },

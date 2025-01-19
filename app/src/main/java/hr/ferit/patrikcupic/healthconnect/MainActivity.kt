@@ -1,10 +1,10 @@
 package hr.ferit.patrikcupic.healthconnect
 
-import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
 import hr.ferit.patrikcupic.healthconnect.views.PatientViewModel
 
 class MainActivity : ComponentActivity() {

@@ -1,6 +1,5 @@
 package hr.ferit.patrikcupic.healthconnect.ui
 
-import hr.ferit.patrikcupic.healthconnect.authentication.Registration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import hr.ferit.patrikcupic.healthconnect.Routes
+import hr.ferit.patrikcupic.healthconnect.authentication.Registration
 import hr.ferit.patrikcupic.healthconnect.data.Specialty
 
 @Composable

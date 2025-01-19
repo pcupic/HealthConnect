@@ -3,9 +3,7 @@
 package hr.ferit.patrikcupic.healthconnect
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
-import com.google.firebase.auth.EmailAuthProvider
 
 object ProfileManager {
 
@@ -262,5 +260,9 @@ object ProfileManager {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    fun signOut() {
+        auth.signOut()
     }
 }

@@ -1,22 +1,15 @@
 package hr.ferit.patrikcupic.healthconnect.views
 
-import android.content.Context
-import android.icu.text.SimpleDateFormat
-import android.widget.Toast
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import hr.ferit.patrikcupic.healthconnect.AppointmentScheduler
 import hr.ferit.patrikcupic.healthconnect.MedicalRecordManager
-import hr.ferit.patrikcupic.healthconnect.ProfileManager
 import hr.ferit.patrikcupic.healthconnect.auth
 import hr.ferit.patrikcupic.healthconnect.data.Appointment
 import hr.ferit.patrikcupic.healthconnect.data.AppointmentStatus
 import hr.ferit.patrikcupic.healthconnect.data.MedicalRecord
 import hr.ferit.patrikcupic.healthconnect.data.Patient
 import hr.ferit.patrikcupic.healthconnect.db
-import java.util.Date
-import java.util.Locale
-import java.util.UUID
 
 class DoctorViewModel : ViewModel() {
     val appointmentsData = mutableStateListOf<Appointment>()

@@ -1,6 +1,5 @@
 package hr.ferit.patrikcupic.healthconnect.ui
 
-import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,11 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import hr.ferit.patrikcupic.healthconnect.AppointmentScheduler
-import hr.ferit.patrikcupic.healthconnect.MedicalRecordManager
 import hr.ferit.patrikcupic.healthconnect.auth
 import hr.ferit.patrikcupic.healthconnect.data.MedicalRecord
 import hr.ferit.patrikcupic.healthconnect.data.Patient
+import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
 import java.util.*
 
 

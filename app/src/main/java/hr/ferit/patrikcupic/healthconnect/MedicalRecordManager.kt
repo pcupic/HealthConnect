@@ -2,7 +2,6 @@ package hr.ferit.patrikcupic.healthconnect
 
 import android.icu.text.SimpleDateFormat
 import hr.ferit.patrikcupic.healthconnect.data.MedicalRecord
-import hr.ferit.patrikcupic.healthconnect.views.DoctorViewModel
 import java.util.Date
 import java.util.Locale
 import java.util.UUID
