@@ -30,6 +30,8 @@ fun RegisterScreen(navigation: NavController) {
     var userType by remember { mutableStateOf("Patient") }
     var selectedSpecialty by remember { mutableStateOf("") }
 
+
+
     Surface(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier

@@ -38,7 +38,6 @@ fun AppointmentScheduleScreen(
 
     val doctorsData = patientViewModel.doctorsData
     val context = LocalContext.current
-    val scheduler = remember { AppointmentScheduler(context) }
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -104,7 +103,7 @@ fun AppointmentScheduleScreen(
                             status = AppointmentStatus.PENDING,
                             doctorUsername = selectedDoctorName,
                         )
-                        scheduler.scheduleAppointment(appointment)
+                        patientViewModel.scheduleAppointment(appointment, context)
                         navigation.navigateUp()
                     } else {
                         Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()

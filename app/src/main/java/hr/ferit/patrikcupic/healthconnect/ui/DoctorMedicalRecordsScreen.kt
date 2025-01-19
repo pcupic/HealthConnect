@@ -25,7 +25,6 @@ fun DoctorMedicalRecordsScreen(
     doctorViewModel: DoctorViewModel,
 ) {
     val medicalRecords by remember { mutableStateOf(doctorViewModel.medicalRecordsData) }
-    val medicalRecordManager = remember { MedicalRecordManager(doctorViewModel) }
 
     LaunchedEffect(Unit) {
         doctorViewModel.updateData()
@@ -81,7 +80,8 @@ fun DoctorMedicalRecordsScreen(
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 items(medicalRecords) { record ->
                     MedicalRecordCard(record) {
-                        medicalRecordManager.deleteMedicalRecord(record)
+                        doctorViewModel.deleteMedicalRecord(record)
+                        doctorViewModel.updateData()
                     }
                 }
             }

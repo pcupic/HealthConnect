@@ -7,9 +7,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.UUID
 
-class MedicalRecordManager(
-    private val doctorViewModel: DoctorViewModel,
-) {
+class MedicalRecordManager() {
 
     fun addMedicalRecord(
         record: MedicalRecord,
@@ -31,10 +29,6 @@ class MedicalRecordManager(
             db.collection("medical_records")
                 .document(recordId)
                 .set(recordData)
-                .addOnSuccessListener {
-                    doctorViewModel.updateData()
-                }
-
         }
     }
 

@@ -35,7 +35,6 @@ fun MedicalRecordFormScreen(
 
     val patientsData = doctorViewModel.patientsData
     val context = LocalContext.current
-    val medicalRecordManager = remember { MedicalRecordManager(doctorViewModel) }
 
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -76,7 +75,8 @@ fun MedicalRecordFormScreen(
                             patientUsername = selectedPatientName,
                             details = details,
                             )
-                        medicalRecordManager.addMedicalRecord(medicalRecord)
+                        doctorViewModel.addMedicalRecord(medicalRecord)
+                        doctorViewModel.updateData()
                         Toast.makeText(context, "Medical Record Added", Toast.LENGTH_SHORT).show()
                         navigation.navigateUp()
                     } else {

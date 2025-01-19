@@ -1,17 +1,25 @@
 package hr.ferit.patrikcupic.healthconnect.views
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import hr.ferit.patrikcupic.healthconnect.AppointmentScheduler
+import hr.ferit.patrikcupic.healthconnect.ProfileManager
+import hr.ferit.patrikcupic.healthconnect.auth
 import hr.ferit.patrikcupic.healthconnect.data.Appointment
 import hr.ferit.patrikcupic.healthconnect.data.Doctor
 import hr.ferit.patrikcupic.healthconnect.data.MedicalRecord
 import hr.ferit.patrikcupic.healthconnect.db
+import java.util.UUID
 
 class PatientViewModel : ViewModel() {
     val appointmentsData = mutableStateListOf<Appointment>()
     val doctorsData = mutableStateListOf<Doctor>()
     val medicalRecordsData = mutableStateListOf<MedicalRecord>()
+    private val appointmentScheduler = AppointmentScheduler()
 
     init {
         updateData()
@@ -71,6 +79,14 @@ class PatientViewModel : ViewModel() {
         retrieveDoctors()
         retrieveAppointments()
         retrieveMedicalRecords()
+    }
+
+    fun scheduleAppointment(appointment: Appointment, context: Context) {
+        appointmentScheduler.scheduleAppointment(appointment, context)
+    }
+
+    fun deleteAppointment(appointment: Appointment) {
+        appointmentScheduler.deleteAppointment(appointment)
     }
 }
 

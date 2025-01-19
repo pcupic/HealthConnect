@@ -33,7 +33,6 @@ fun PatientDashboard(
 
     val scheduledAppointments = patientViewModel.appointmentsData
     val context = LocalContext.current
-    val scheduler = remember { AppointmentScheduler(context) }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -90,7 +89,7 @@ fun PatientDashboard(
                     PatientAppointmentItem(
                         appointment = appointment,
                         onDelete = { appointmentToDelete ->
-                            scheduler.deleteAppointment(appointmentToDelete)
+                            patientViewModel.deleteAppointment(appointmentToDelete)
                             patientViewModel.updateData()
                         }
                     )

@@ -1,8 +1,13 @@
 package hr.ferit.patrikcupic.healthconnect.views
 
+import android.content.Context
 import android.icu.text.SimpleDateFormat
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import hr.ferit.patrikcupic.healthconnect.AppointmentScheduler
+import hr.ferit.patrikcupic.healthconnect.MedicalRecordManager
+import hr.ferit.patrikcupic.healthconnect.ProfileManager
 import hr.ferit.patrikcupic.healthconnect.auth
 import hr.ferit.patrikcupic.healthconnect.data.Appointment
 import hr.ferit.patrikcupic.healthconnect.data.AppointmentStatus
@@ -17,6 +22,8 @@ class DoctorViewModel : ViewModel() {
     val appointmentsData = mutableStateListOf<Appointment>()
     val patientsData = mutableStateListOf<Patient>()
     val medicalRecordsData = mutableStateListOf<MedicalRecord>()
+    private val appointmentScheduler = AppointmentScheduler()
+    private val medicalRecordManager = MedicalRecordManager()
 
     init {
         updateData()
@@ -71,5 +78,25 @@ class DoctorViewModel : ViewModel() {
             retrieveAppointments()
             retrieveMedicalRecords()
         }
+
+    fun updateAppointmentStatus(appointment: Appointment, newStatus: AppointmentStatus) {
+        appointmentScheduler.updateAppointmentStatus(appointment, newStatus)
+    }
+
+    fun deleteAppointment(appointment: Appointment) {
+        appointmentScheduler.deleteAppointment(appointment)
+    }
+
+    fun addMedicalRecord(
+        record: MedicalRecord,
+    ) {
+        medicalRecordManager.addMedicalRecord(record)
+    }
+
+    fun deleteMedicalRecord(
+        record: MedicalRecord,
+    ) {
+        medicalRecordManager.deleteMedicalRecord(record)
+    }
 }
 

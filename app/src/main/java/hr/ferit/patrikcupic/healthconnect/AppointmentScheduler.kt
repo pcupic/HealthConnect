@@ -6,10 +6,8 @@ import hr.ferit.patrikcupic.healthconnect.data.Appointment
 import hr.ferit.patrikcupic.healthconnect.data.AppointmentStatus
 import java.util.UUID
 
-class AppointmentScheduler(
-    private val context: Context,
-) {
-    fun scheduleAppointment(appointment: Appointment) {
+class AppointmentScheduler() {
+    fun scheduleAppointment(appointment: Appointment, context: Context) {
         val currentUser = auth.currentUser
         val currentUserId = currentUser?.uid
 
