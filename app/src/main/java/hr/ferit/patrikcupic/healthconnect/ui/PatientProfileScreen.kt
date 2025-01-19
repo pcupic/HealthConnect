@@ -118,7 +118,7 @@ fun PatientProfileScreen(
             Button(
                 onClick = {
                     if (password.isNotEmpty()) {
-                        ProfileManager.deletePatient(context)
+                        ProfileManager.deletePatient(context, password)
                         patientViewModel.updateData()
                         navigation.navigate(Routes.SCREEN_LOGIN)
                     } else {

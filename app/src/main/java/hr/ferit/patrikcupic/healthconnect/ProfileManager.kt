@@ -4,6 +4,7 @@ package hr.ferit.patrikcupic.healthconnect
 
 import android.content.Context
 import android.widget.Toast
+import com.google.firebase.auth.EmailAuthProvider
 
 object ProfileManager {
 
@@ -101,89 +102,113 @@ object ProfileManager {
         }
     }
 
-    fun deletePatient(context: Context) {
-        val currentUserId = auth.currentUser?.uid
+    fun deletePatient(context: Context, password: String) {
+        val currentUser = auth.currentUser
+        val currentUserId = currentUser?.uid
 
-        currentUserId?.let { id ->
-            db.collection("appointments").whereEqualTo("patientId", id).get()
-                .addOnSuccessListener { appointmentQuerySnapshot ->
-                    if (!appointmentQuerySnapshot.isEmpty)
-                        for (appointment in appointmentQuerySnapshot.documents)
-                            db.collection("appointments").document(appointment.id).delete()
+        if (currentUserId != null) {
+            val credential = EmailAuthProvider.getCredential(currentUser.email!!, password)
+            currentUser.reauthenticate(credential).addOnCompleteListener { authTask ->
+                if (authTask.isSuccessful) {
+                    db.collection("appointments").whereEqualTo("patientId", currentUserId).get()
+                        .addOnSuccessListener { appointmentQuerySnapshot ->
+                            if (!appointmentQuerySnapshot.isEmpty)
+                                for (appointment in appointmentQuerySnapshot.documents)
+                                    db.collection("appointments").document(appointment.id).delete()
 
-                    db.collection("medical_records").whereEqualTo("patientId", id).get()
-                        .addOnSuccessListener { medicalRecordQuerySnapshot ->
-                            if (!medicalRecordQuerySnapshot.isEmpty)
-                                for (medicalRecord in medicalRecordQuerySnapshot.documents)
-                                    db.collection("medical_records").document(medicalRecord.id)
-                                        .delete()
+                            db.collection("medical_records").whereEqualTo("patientId", currentUserId).get()
+                                .addOnSuccessListener { medicalRecordQuerySnapshot ->
+                                    if (!medicalRecordQuerySnapshot.isEmpty)
+                                        for (medicalRecord in medicalRecordQuerySnapshot.documents)
+                                            db.collection("medical_records").document(medicalRecord.id)
+                                                .delete()
 
-
-                            db.collection("patients").document(id).delete()
-                                .addOnSuccessListener {
-                                    auth.currentUser?.delete()?.addOnCompleteListener { task ->
-                                        if (task.isSuccessful) {
-                                            Toast.makeText(
-                                                context,
-                                                "Account and related data deleted successfully",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        } else {
-                                            Toast.makeText(
-                                                context,
-                                                "Failed to delete account: ${task.exception?.message}",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                    db.collection("patients").document(currentUserId).delete()
+                                        .addOnSuccessListener {
+                                            currentUser.delete().addOnCompleteListener { task ->
+                                                if (task.isSuccessful) {
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Account and related data deleted successfully",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                } else {
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Failed to delete account: ${task.exception?.message}",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+                                            }
                                         }
-                                    }
                                 }
                         }
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Reauthentication failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-        } ?: run {
+            }
+        } else {
             Toast.makeText(context, "No user is currently logged in.", Toast.LENGTH_SHORT).show()
         }
     }
 
 
-    fun deleteDoctor(context: Context) {
-        val currentUserId = auth.currentUser?.uid
 
-        currentUserId?.let { id ->
-            db.collection("appointments").whereEqualTo("doctorId", id).get()
-                .addOnSuccessListener { appointmentQuerySnapshot ->
-                    for (appointment in appointmentQuerySnapshot.documents)
-                        db.collection("appointments").document(appointment.id).delete()
+    fun deleteDoctor(context: Context, password: String) {
+        val currentUser = auth.currentUser
+        val currentUserId = currentUser?.uid
 
+        if (currentUserId != null) {
+            val credential = EmailAuthProvider.getCredential(currentUser.email!!, password)
+            currentUser.reauthenticate(credential).addOnCompleteListener { reAuthTask ->
+                if (reAuthTask.isSuccessful) {
+                    db.collection("appointments").whereEqualTo("doctorId", currentUserId).get()
+                        .addOnSuccessListener { appointmentQuerySnapshot ->
+                            for (appointment in appointmentQuerySnapshot.documents)
+                                db.collection("appointments").document(appointment.id).delete()
 
-                    db.collection("medical_records").whereEqualTo("doctorId", id).get()
-                        .addOnSuccessListener { medicalRecordQuerySnapshot ->
-                            for (medicalRecord in medicalRecordQuerySnapshot.documents)
-                                db.collection("medical_records").document(medicalRecord.id).delete()
+                            db.collection("medical_records").whereEqualTo("doctorId", currentUserId).get()
+                                .addOnSuccessListener { medicalRecordQuerySnapshot ->
+                                    for (medicalRecord in medicalRecordQuerySnapshot.documents)
+                                        db.collection("medical_records").document(medicalRecord.id).delete()
 
-                            db.collection("doctors").document(id).delete()
-                                .addOnSuccessListener {
-                                    auth.currentUser?.delete()?.addOnCompleteListener { task ->
-                                        if (task.isSuccessful) {
-                                            Toast.makeText(
-                                                context,
-                                                "Doctor account and related data deleted successfully",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        } else {
-                                            Toast.makeText(
-                                                context,
-                                                "Failed to delete account: ${task.exception?.message}",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                    db.collection("doctors").document(currentUserId).delete()
+                                        .addOnSuccessListener {
+                                            currentUser.delete().addOnCompleteListener { task ->
+                                                if (task.isSuccessful) {
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Doctor account and related data deleted successfully",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                } else {
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Failed to delete account: ${task.exception?.message}",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+                                            }
                                         }
-                                    }
                                 }
                         }
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Reauthentication failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-        } ?: run {
+            }
+        } else {
             Toast.makeText(context, "No user is currently logged in.", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun updateDoctorUsernameInAppointmentsAndMedicalRecords(
         doctorId: String,

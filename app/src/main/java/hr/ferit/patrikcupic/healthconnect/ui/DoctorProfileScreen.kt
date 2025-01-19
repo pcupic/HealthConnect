@@ -128,7 +128,7 @@ fun DoctorProfileScreen(
             Button(
                 onClick = {
                     if (password.isNotEmpty()) {
-                        ProfileManager.deleteDoctor(context)
+                        ProfileManager.deleteDoctor(context, password)
                         doctorViewModel.updateData()
                         navigation.navigate(Routes.SCREEN_LOGIN)
                     } else {
