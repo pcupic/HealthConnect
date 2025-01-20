@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import hr.ferit.patrikcupic.healthconnect.AppointmentScheduler
+import hr.ferit.patrikcupic.healthconnect.auth
 import hr.ferit.patrikcupic.healthconnect.data.Appointment
 import hr.ferit.patrikcupic.healthconnect.data.Doctor
 import hr.ferit.patrikcupic.healthconnect.data.MedicalRecord
@@ -21,7 +22,7 @@ class PatientViewModel : ViewModel() {
     }
 
     private fun retrieveMedicalRecords() {
-        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        val currentUserId = auth.currentUser?.uid
 
         if (currentUserId != null) {
             db.collection("medical_records")
@@ -39,7 +40,7 @@ class PatientViewModel : ViewModel() {
     }
 
     private fun retrieveAppointments() {
-        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        val currentUserId = auth.currentUser?.uid
 
         if (currentUserId != null) {
             db.collection("appointments")
